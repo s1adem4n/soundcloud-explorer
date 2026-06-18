@@ -39,11 +39,11 @@
   {/if}
 
   <a
-    href="soundcloud://artists:{like.track.user.id}"
+    href="soundcloud://users:{like.track.user.id}"
     target="_blank"
     class="px-4 py-2"
   >
-    Open artist page
+    Open user page
   </a>
 
   <button

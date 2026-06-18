@@ -11,7 +11,7 @@
     $props();
 </script>
 
-<div class="flex h-full gap-2 px-4 py-2">
+<div class="flex h-full gap-2 px-2 py-1">
   <img
     src={like.track.artwork_url || like.track.user.avatar_url}
     alt={like.track.title}
@@ -21,7 +21,7 @@
   <a
     href="soundcloud://tracks:{like.track.id}"
     target="_blank"
-    class="flex min-w-0 flex-col text-sm"
+    class="flex min-w-0 flex-col justify-between text-xs"
   >
     <span class="truncate font-semibold">
       {like.track.title}
@@ -30,17 +30,15 @@
       {like.track.publisher_metadata?.artist || like.track.user.username}
     </span>
 
-    <div class="flex gap-1 text-xs opacity-60">
+    <div class="flex gap-2 opacity-60">
       <div class="flex items-center gap-1">
         <PlayIcon class="h-3 w-3" />
         {formatPossiblyBigNumber(like.track.playback_count || 0)}
       </div>
-      <span>-</span>
       <div class="flex items-center gap-1">
         <HeartIcon class="h-3 w-3" />
         {formatPossiblyBigNumber(like.track.likes_count || 0)}
       </div>
-      <span>-</span>
       <div class="flex items-center gap-1">
         <CommentIcon class="h-3 w-3" />
         {like.track.comment_count || 0}

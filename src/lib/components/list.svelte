@@ -65,7 +65,7 @@
 <div class="relative min-h-0 flex-1">
   {#if isScrolling && currentMonthYear}
     <div
-      class="pointer-events-none absolute top-4 left-1/2 z-10 -translate-x-1/2 rounded bg-black/70 px-2 py-1 text-sm whitespace-nowrap text-white"
+      class="pointer-events-none absolute top-2 left-1/2 z-10 -translate-x-1/2 rounded bg-black/70 px-2 py-1 text-sm whitespace-nowrap text-white"
     >
       {currentMonthYear}
     </div>
@@ -73,7 +73,7 @@
 
   <VList
     bind:this={list}
-    class="h-full py-2"
+    class="h-full py-1"
     data={filteredLikes}
     getKey={(like) => like.track.id}
     onscroll={updateScrollState}
