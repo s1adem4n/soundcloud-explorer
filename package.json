@@ -1,0 +1,33 @@
+{
+  "name": "soundcloud-explorer",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "download:likes": "node --env-file .env scripts/download-likes.ts",
+    "build": "vite build",
+    "preview": "vite preview",
+    "check": "svelte-check --tsconfig ./tsconfig.app.json && tsc -p tsconfig.node.json"
+  },
+  "dependencies": {
+    "fuse.js": "^7.4.2",
+    "valibot": "^1.4.1",
+    "virtua": "^0.49.1"
+  },
+  "devDependencies": {
+    "@fontsource/hachi-maru-pop": "^5.2.8",
+    "@iconify-json/mingcute": "^1.2.7",
+    "@sveltejs/vite-plugin-svelte": "^7.1.2",
+    "@tailwindcss/vite": "^4.3.1",
+    "@tsconfig/svelte": "^5.0.8",
+    "@types/node": "^24.12.3",
+    "oxfmt": "^0.55.0",
+    "svelte": "^5.55.5",
+    "svelte-check": "^4.4.8",
+    "tailwindcss": "^4.3.1",
+    "typescript": "~6.0.2",
+    "unplugin-icons": "^23.0.1",
+    "vite": "^8.0.12"
+  }
+}

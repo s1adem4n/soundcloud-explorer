@@ -1,0 +1,15 @@
+@import 'tailwindcss';
+@import '@fontsource/hachi-maru-pop';
+
+@layer base {
+  html,
+  body,
+  #app {
+    @apply h-dvh overscroll-none bg-pink-200;
+  }
+}
+
+@theme {
+  --font-sans: 'Hachi Maru Pop';
+  --radius: 0.5rem;
+}
