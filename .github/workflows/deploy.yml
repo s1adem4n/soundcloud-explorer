@@ -27,7 +27,7 @@ jobs:
       - uses: jdx/mise-action@v4
       - run: pnpm install --frozen-lockfile
         
-      - run: pnpm download:likes
+      - run: node scripts/download-likes.ts
         env:
           SOUNDCLOUD_OAUTH_TOKEN: ${{ secrets.SOUNDCLOUD_OAUTH_TOKEN }}
 
