@@ -33,9 +33,7 @@
   class="m-auto hidden min-w-xs flex-col divide-y divide-black border border-black bg-white text-center open:flex"
 >
   {#if showInListVisible}
-    <button onclick={onShowInList} class="px-4 py-2 focus:outline-none">
-      Show in list
-    </button>
+    <button onclick={onShowInList} class="px-4 py-2">Show in list</button>
   {/if}
 
   <a
