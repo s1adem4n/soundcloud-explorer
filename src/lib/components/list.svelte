@@ -73,7 +73,7 @@
 
   <VList
     bind:this={list}
-    class="h-full py-1"
+    class="h-full scrollbar-thumb-black py-1"
     data={filteredLikes}
     getKey={(like) => like.track.id}
     onscroll={updateScrollState}
