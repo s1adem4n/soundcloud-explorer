@@ -8,9 +8,9 @@
   let query = $state('');
 </script>
 
-<div class="relative flex h-dvh flex-col">
+<div class="relative flex h-full flex-col">
   <input
-    class="h-10 w-full bg-white px-4 focus:outline-none"
+    class="h-10 w-full px-4 shadow-sm focus:outline-none"
     placeholder="search ..."
     bind:value={query}
   />

@@ -11,7 +11,7 @@
     $props();
 </script>
 
-<div class="flex h-full gap-2 px-2 py-1">
+<div class="flex h-16 gap-2 px-2 py-1 contain-strict">
   <img
     src={like.track.artwork_url || like.track.user.avatar_url}
     alt={like.track.title}
