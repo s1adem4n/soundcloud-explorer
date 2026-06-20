@@ -24,6 +24,9 @@ importers:
       '@iconify-json/mingcute':
         specifier: ^1.2.7
         version: 1.2.7
+      '@slademan/soundcloud-ts':
+        specifier: ^0.0.0
+        version: 0.0.0
       '@sveltejs/vite-plugin-svelte':
         specifier: ^7.1.2
         version: 7.1.2(svelte@5.56.3)(vite@8.0.16(@types/node@24.13.2)(jiti@2.7.0))
@@ -34,7 +37,7 @@ importers:
         specifier: ^5.0.8
         version: 5.0.8
       '@types/node':
-        specifier: ^24.12.3
+        specifier: ^24.13.2
         version: 24.13.2
       oxfmt:
         specifier: ^0.55.0
@@ -328,6 +331,9 @@ packages:
 
   '@rolldown/pluginutils@1.0.1':
     resolution: {integrity: sha512-2j9bGt5Jh8hj+vPtgzPtl72j0yRxHAyumoo6TNfAjsLB04UtpSvPbPcDcBMxz7n+9CYB0c1GxQFxYRg2jimqGw==}
+
+  '@slademan/soundcloud-ts@0.0.0':
+    resolution: {integrity: sha512-Q3B9qnYNBeKALLeQZDSP1if3oIdUvYV2hGhLlD6ZC8OyCocyfkdGWgRvzY/zbauwFqILUJQIVeK+2oc6r5AHqQ==}
 
   '@sveltejs/acorn-typescript@1.0.10':
     resolution: {integrity: sha512-4WfKk68eTih+MiJD4fSbxN7E8kVBmTMPWHUPYjvl2N0rMs53YLTT8/YjKU5Dtnz5LqDjl7LEw4U7lXR2W3J5WA==}
@@ -1020,6 +1026,8 @@ snapshots:
     optional: true
 
   '@rolldown/pluginutils@1.0.1': {}
+
+  '@slademan/soundcloud-ts@0.0.0': {}
 
   '@sveltejs/acorn-typescript@1.0.10(acorn@8.17.0)':
     dependencies:

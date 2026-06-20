@@ -8,7 +8,7 @@
     "download:likes": "node --env-file .env scripts/download-likes.ts",
     "build": "vite build",
     "preview": "vite preview",
-    "check": "svelte-check --tsconfig ./tsconfig.app.json && tsc -p tsconfig.node.json"
+    "check": "svelte-check --tsconfig ./tsconfig.json && tsc -p scripts/tsconfig.json"
   },
   "dependencies": {
     "fuse.js": "^7.4.2",
@@ -18,10 +18,11 @@
   "devDependencies": {
     "@fontsource/hachi-maru-pop": "^5.2.8",
     "@iconify-json/mingcute": "^1.2.7",
+    "@slademan/soundcloud-ts": "^0.0.0",
     "@sveltejs/vite-plugin-svelte": "^7.1.2",
     "@tailwindcss/vite": "^4.3.1",
     "@tsconfig/svelte": "^5.0.8",
-    "@types/node": "^24.12.3",
+    "@types/node": "^24.13.2",
     "oxfmt": "^0.55.0",
     "svelte": "^5.55.5",
     "svelte-check": "^4.4.8",

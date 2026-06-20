@@ -2,11 +2,15 @@ import { writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+import {
+  SoundCloudClient,
+  type SoundCloudLike,
+  type SoundCloudUser,
+} from '@slademan/soundcloud-ts';
 import * as v from 'valibot';
 
 import { likesDataSchema, type LikesData } from '../src/lib/likes.schema.ts';
 
-const API_BASE_URL = 'https://api-v2.soundcloud.com/';
 const WEB_BASE_URL = 'https://soundcloud.com/';
 const OUTPUT_PATH = resolve(
   dirname(fileURLToPath(import.meta.url)),
@@ -17,25 +21,6 @@ const REQUEST_HEADERS = {
   Referer: 'https://soundcloud.com/',
   'User-Agent':
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.67',
-};
-
-type PaginatedResponse<T> = {
-  collection?: T[];
-  next_href?: string | null;
-};
-
-type SoundCloudUser = {
-  id: number;
-  username?: string;
-};
-
-type SoundCloudLike = {
-  created_at?: unknown;
-  track?: unknown;
-};
-
-type SoundCloudTrack = {
-  id?: unknown;
 };
 
 function requiredEnv(name: string): string {
@@ -73,64 +58,47 @@ async function getWebClientID(): Promise<string> {
   throw new Error('could not find SoundCloud client_id');
 }
 
-async function fetchJSON<T>(
-  pathOrURL: string,
-  clientID: string,
-  oauthToken: string,
-): Promise<T> {
-  const url = new URL(pathOrURL, API_BASE_URL);
-  url.searchParams.set('client_id', clientID);
-
-  const response = await fetch(url, {
-    headers: {
-      ...REQUEST_HEADERS,
-      Authorization: `OAuth ${oauthToken}`,
-    },
-  });
-
-  if (!response.ok) {
-    throw new Error(
-      `GET ${url} failed: ${response.status} ${await response.text()}`,
-    );
-  }
-
-  return response.json() as Promise<T>;
-}
-
 async function getCurrentUser(
-  clientID: string,
-  oauthToken: string,
+  client: SoundCloudClient,
 ): Promise<SoundCloudUser> {
-  return fetchJSON<SoundCloudUser>('me', clientID, oauthToken);
-}
-
-function asRecord(value: unknown): Record<string, unknown> | undefined {
-  if (value && typeof value === 'object' && !Array.isArray(value)) {
-    return value as Record<string, unknown>;
+  const user = await client.v2.request('GET /me');
+  if (typeof user.id !== 'number') {
+    throw new Error('GET /me did not return a SoundCloud user');
   }
+
+  return user as SoundCloudUser;
 }
 
-function getTrackID(value: SoundCloudLike): number | undefined {
-  const track = asRecord(value.track) as SoundCloudTrack | undefined;
-  return typeof track?.id === 'number' ? track.id : undefined;
+function getNextOffset(nextHref?: string | null): string | undefined {
+  if (!nextHref) {
+    return;
+  }
+
+  return new URL(nextHref).searchParams.get('offset') ?? undefined;
 }
 
 async function getAllLikes(
-  userID: number,
+  client: SoundCloudClient,
   clientID: string,
-  oauthToken: string,
+  userID: number,
 ): Promise<SoundCloudLike[]> {
   const likes: SoundCloudLike[] = [];
   const seenTrackIDs = new Set<number>();
-  let nextPath: string | undefined = `users/${userID}/likes?limit=200`;
+  let offset: string | undefined;
 
-  while (nextPath) {
-    const page: PaginatedResponse<SoundCloudLike> = await fetchJSON<
-      PaginatedResponse<SoundCloudLike>
-    >(nextPath, clientID, oauthToken);
+  do {
+    const page = await client.v2.request('GET /users/:userId/likes', {
+      params: { userId: userID },
+      query: {
+        client_id: clientID,
+        limit: 200,
+        linked_partitioning: 1,
+        offset,
+      },
+    });
 
     for (const rawLike of page.collection ?? []) {
-      const trackID = getTrackID(rawLike);
+      const trackID = rawLike.track?.id;
       if (!trackID || seenTrackIDs.has(trackID)) {
         continue;
       }
@@ -139,9 +107,9 @@ async function getAllLikes(
       likes.push(rawLike);
     }
 
-    nextPath = page.next_href ?? undefined;
+    offset = getNextOffset(page.next_href);
     console.log(`downloaded ${likes.length} likes`);
-  }
+  } while (offset);
 
   likes.reverse();
   return likes;
@@ -150,8 +118,14 @@ async function getAllLikes(
 async function main() {
   const oauthToken = requiredEnv('SOUNDCLOUD_OAUTH_TOKEN');
   const clientID = await getWebClientID();
-  const user = await getCurrentUser(clientID, oauthToken);
-  const likes = await getAllLikes(user.id, clientID, oauthToken);
+  const client = new SoundCloudClient({
+    accessToken: oauthToken,
+    authScheme: 'OAuth',
+    clientId: clientID,
+    headers: REQUEST_HEADERS,
+  });
+  const user = await getCurrentUser(client);
+  const likes = await getAllLikes(client, clientID, user.id);
   const data: LikesData = v.parse(likesDataSchema, {
     updated_at: new Date().toISOString(),
     likes,

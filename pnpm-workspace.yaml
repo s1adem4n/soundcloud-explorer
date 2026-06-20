@@ -1,0 +1,2 @@
+minimumReleaseAgeExclude:
+  - '@slademan/soundcloud-ts@0.0.0'
